@@ -2,21 +2,48 @@ import './App.css'
 import {useState} from 'react'
 
 const App = () => {
-  
-  const [taskTopic,setTaskTopic] = useState('')
-  const [taskText,setTaskText] = useState('')
 
-  const [topicPlaceholder, setTopicPlaceholder] = useState('Write task topic')
-  const [textPlaceholder, setTextPlaceholder] = useState('      Write new task')
+  const [newTaskTopic,setNewTaskTopic] = useState('')
+  const [newTaskText,setNewTaskText] = useState('')
 
-  type validTask = {
-    topic: string
-    text: string
+  const [topicError, setTopicError] = useState(false)
+  const [textError, setTextError] = useState(false)
+
+  type ValidTask = {                                             topic: strin
+     text: string
   }
 
-  const task : validTask = {
-    topic : taskTopic
-    text : taskText
+  const task = {
+     topic : newTaskTopic,
+     text : newTaskText                                          }
+
+  const [topicPlaceholder, setTopicPlaceholder] = useState('Write task topic')
+  const [textPlaceholder, setTextPlaceholder] = useState('Write new task')
+  
+  const createNewTask = (task : ValidTask) => {
+
+    if(task.topic.trim() === ''){
+      setTopicPlaceholder("This row can't be empty")
+      setTopicError(true)
+    } else {
+      setTopicPlaceholder("Write task topic")
+      setTopicError(false)
+    }
+
+    if(task.text.trim() === ''){
+       setTextPlaceholder("This row can't be empty")
+       setTextError(true)
+    }else {
+      setTopicPlaceholder("Write new task")
+      setTopicError(false)
+    }
+
+    return(
+      <div className="task">
+         <h1 className="taskTopic">{task.topic}</h1>
+         <p className="taskText">{task.text}</p>
+      </div>
+    )
   }
 
   return(
@@ -24,13 +51,15 @@ const App = () => {
     <div id="appBody">
 
        <input id="newTaskTopic"
-              value={taskTopic}
-              onChange={event => setTaskTopic(event.target.value)}
+              className={topicError ? 'inputError' : ''}
+              value={newTaskTopic}
+              onChange={event => setNewTaskTopic(event.target.value)}
               placeholder={topicPlaceholder} />
 
        <input id="newTaskText"
-              value={taskText}
-              onChange={event => setTaskText(event.target.value)}
+              className={textError ? 'inputError' : ''}
+              value={newTaskText}
+              onChange={event => setNewTaskText(event.target.value)}
               placeholder={textPlaceholder}/>
 
        <div id="taskArea"></div>
