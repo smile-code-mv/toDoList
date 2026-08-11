@@ -1,17 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
+import {useState} from 'react'
 
 const App = () => {
-  const age = parseInt(prompt("Write your age"))
-  const name = prompt("Write your name")
+  
+  const [taskTopic,setTaskTopic] = useState('')
+  const [taskText,setTaskText] = useState('')
+
+  const [topicPlaceholder, setTopicPlaceholder] = useState('Write task topic')
+  const [textPlaceholder, setTextPlaceholder] = useState('      Write new task')
+
+  type validTask = {
+    topic: string
+    text: string
+  }
+
+  const task : validTask = {
+    topic : taskTopic
+    text : taskText
+  }
+
   return(
     <>
-    <h1>Hello</h1>
-    <p>Your name is {name}</p>
-    <p>You have {age} years</p>
+    <div id="appBody">
+
+       <input id="newTaskTopic"
+              value={taskTopic}
+              onChange={event => setTaskTopic(event.target.value)}
+              placeholder={topicPlaceholder} />
+
+       <input id="newTaskText"
+              value={taskText}
+              onChange={event => setTaskText(event.target.value)}
+              placeholder={textPlaceholder}/>
+
+       <div id="taskArea"></div>
+    </div>
     </>
   )
 }
