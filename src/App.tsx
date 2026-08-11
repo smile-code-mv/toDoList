@@ -9,20 +9,22 @@ const App = () => {
   const [topicError, setTopicError] = useState(false)
   const [textError, setTextError] = useState(false)
 
-  type ValidTask = {                                             topic: strin
-     text: string
+  type ValidTask = {
+    topic : string
+    text: string
   }
 
   const task = {
      topic : newTaskTopic,
-     text : newTaskText                                          }
-
+     text : newTaskText
+  } 
   const [topicPlaceholder, setTopicPlaceholder] = useState('Write task topic')
   const [textPlaceholder, setTextPlaceholder] = useState('Write new task')
-  
-  const createNewTask = (task : ValidTask) => {
 
-    if(task.topic.trim() === ''){
+  const [tasks, setTasks] = useState<ValidTask[]>([])
+
+  const addNewTask = (task : ValidTask) => {
+    if (task.topic.trim() === '') {
       setTopicPlaceholder("This row can't be empty")
       setTopicError(true)
     } else {
@@ -30,20 +32,16 @@ const App = () => {
       setTopicError(false)
     }
 
-    if(task.text.trim() === ''){
-       setTextPlaceholder("This row can't be empty")
-       setTextError(true)
-    }else {
-      setTopicPlaceholder("Write new task")
-      setTopicError(false)
+    if (task.text.trim() === '') {
+      setTextPlaceholder("This row can't be empty")
+      setTextError(true)
+    } else {
+      setTextPlaceholder("Write new task")
+      setTextError(false)
     }
 
-    return(
-      <div className="task">
-         <h1 className="taskTopic">{task.topic}</h1>
-         <p className="taskText">{task.text}</p>
-      </div>
-    )
+    setTasks(prevTasks => [...prevTasks, taskData])
+
   }
 
   return(
@@ -62,7 +60,16 @@ const App = () => {
               onChange={event => setNewTaskText(event.target.value)}
               placeholder={textPlaceholder}/>
 
-       <div id="taskArea"></div>
+       <button id="addTask" onClick={addNewTask(task)} />
+
+       <div id="taskArea">
+             {tasks.map((task, index) => (
+              <div className="task" key={index}>
+                 <h1 className="taskTopic">{task.topic}</h1>
+                 <p className="taskText">{task.text}</p>
+             </div>
+            ))}
+      </div>
     </div>
     </>
   )
