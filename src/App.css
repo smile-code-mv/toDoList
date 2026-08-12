@@ -1,3 +1,33 @@
+:root{
+  --inputWidth : 50%;
+  --inputHeight : 5%;
+  --buttonHeight: auto; 
+}
+body{
+  justify-content: center;
+}
+input{
+  width: var(--inputWidth);
+  height: var(--inputHeight);
+  border-radius 20px;
+}
+input::placeholder{
+  text-align: center;
+  font-size: 150%;
+}
+#appBody{
+  width: 60vw;
+  height: 40vh;
+  justify-self: center;
+  align-items: center;
+  background-color: lightgrey;
+  border: 2px solid black;
+}
+#addTask{
+  width: auto;
+  height: var(--buttonHeight);
+}
 .inputError::placeholder{
   color:red;
 }
+

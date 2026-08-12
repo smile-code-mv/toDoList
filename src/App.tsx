@@ -24,6 +24,7 @@ const App = () => {
   const [tasks, setTasks] = useState<ValidTask[]>([])
 
   const addNewTask = (task : ValidTask) => {
+
     if (task.topic.trim() === '') {
       setTopicPlaceholder("This row can't be empty")
       setTopicError(true)
@@ -40,7 +41,11 @@ const App = () => {
       setTextError(false)
     }
 
-    setTasks(prevTasks => [...prevTasks, taskData])
+    if(topicError === true || textError === true){
+      return 0;
+    }
+
+    setTasks(prevTasks => [...prevTasks, task])
 
   }
 
@@ -48,21 +53,27 @@ const App = () => {
     <>
     <div id="appBody">
 
-       <input id="newTaskTopic"
-              className={topicError ? 'inputError' : ''}
-              value={newTaskTopic}
-              onChange={event => setNewTaskTopic(event.target.value)}
-              placeholder={topicPlaceholder} />
+      <div id="inputs">
+             <input id="newTaskTopic"
+                    className={topicError ? 'inputError' : ''}
+                    value={newTaskTopic}
+                    onChange={event => setNewTaskTopic(event.target.value)}
+                    placeholder={topicPlaceholder} />
 
-       <input id="newTaskText"
-              className={textError ? 'inputError' : ''}
-              value={newTaskText}
-              onChange={event => setNewTaskText(event.target.value)}
-              placeholder={textPlaceholder}/>
+             <br id="spaceBetweenInputs"/>
 
-       <button id="addTask" onClick={addNewTask(task)} />
+             <input id="newTaskText"
+                    className={textError ? 'inputError' : ''}
+                    value={newTaskText}
+                    onChange={event => setNewTaskText(event.target.value)}
+                    placeholder={textPlaceholder}/>
+      </div>
 
-       <div id="taskArea">
+      <div id="buttons">
+          <button id="addTask" onClick={() => addNewTask(task)} >+</button>
+       </div>
+
+       <div id="tasks">
              {tasks.map((task, index) => (
               <div className="task" key={index}>
                  <h1 className="taskTopic">{task.topic}</h1>
@@ -70,7 +81,9 @@ const App = () => {
              </div>
             ))}
       </div>
+
     </div>
+
     </>
   )
 }
