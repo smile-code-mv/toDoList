@@ -60,7 +60,8 @@ const App = () => {
                     onChange={event => setNewTaskTopic(event.target.value)}
                     placeholder={topicPlaceholder} />
 
-             <br id="spaceBetweenInputs"/>
+             <br />
+             <br />
 
              <input id="newTaskText"
                     className={textError ? 'inputError' : ''}
@@ -69,14 +70,19 @@ const App = () => {
                     placeholder={textPlaceholder}/>
       </div>
 
+      <br />
+
       <div id="buttons">
           <button id="addTask" onClick={() => addNewTask(task)} >+</button>
        </div>
+        
+       <hr />
 
        <div id="tasks">
              {tasks.map((task, index) => (
               <div className="task" key={index}>
-                 <h1 className="taskTopic">{task.topic}</h1>
+                 <h3 className="taskTopic">{task.topic}</h3>
+                 <hr />
                  <p className="taskText">{task.text}</p>
              </div>
             ))}
