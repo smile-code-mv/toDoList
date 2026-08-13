@@ -49,6 +49,17 @@ const App = () => {
 
   }
 
+  const [selectedTasks, setSelectedTasks] = useState<number[]>([]);
+
+  const [selected, setSelected] = useState(false)
+
+  const saveSelected = (taskIndex : number) => {
+    setSelectedTasks(prevTasks => [...prevTasks,taskIndex])
+  }
+  const removeSelected = (taskIndex : number) => {
+    setSelectedTasks(prevTasks => prevTasks.filter((_, i) => i !== taskIndex)
+  }
+
   return(
     <>
     <div id="appBody">
@@ -81,9 +92,12 @@ const App = () => {
        <div id="tasks">
              {tasks.map((task, index) => (
               <div className="task" key={index}>
-                 <h3 className="taskTopic">{task.topic}</h3>
-                 <hr />
-                 <p className="taskText">{task.text}</p>
+                 <button className="setting">⚙</button>
+                 <div className="taskBody">
+                    <h3 className="taskTopic">{task.topic}</h3>
+                    <hr />
+                    <p className="taskText">{task.text}</p>
+                  </div>
              </div>
             ))}
       </div>
