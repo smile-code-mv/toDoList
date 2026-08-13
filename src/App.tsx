@@ -10,11 +10,13 @@ const App = () => {
   const [textError, setTextError] = useState(false)
 
   type ValidTask = {
+    id: string
     topic : string
     text: string
   }
 
   const task = {
+     id: crypto.randomUUID(),
      topic : newTaskTopic,
      text : newTaskText
   } 
@@ -49,16 +51,28 @@ const App = () => {
 
   }
 
-  const [selectedTasks, setSelectedTasks] = useState<number[]>([]);
+  const [selectedsArray, editSelectedsArray] = useState<string[]>([]);
 
   const [selected, setSelected] = useState(false)
 
-  const saveSelected = (taskIndex : number) => {
-    setSelectedTasks(prevTasks => [...prevTasks,taskIndex])
+  const saveSelected = (taskId : string) => {
+    editSelectedsArray(prevTasks => [...prevTasks,taskId])
   }
-  const removeSelected = (taskIndex : number) => {
-    setSelectedTasks(prevTasks => prevTasks.filter((_, i) => i !== taskIndex)
+  const removeSelected = (taskId : string) => {
+    editSelectedsArray(prevTasks => prevTasks.filter((_, i) => i !== taskId))
   }
+  const checkSelected = (idsArray: string[])  => {
+    const count = idsArray.length
+    if (count > 0){setSelected(true)} else setSelected(false)
+  }
+  const removeAllSelectedTasks = (idsArray: string[]) => {
+  setTasks(prevTasks => prevTasks.filter(task => !idsArray.includes(task.id)));
+  }
+  const removeOneTask = (idToRemove: string) => {
+  setTasks(prevTasks => prevTasks.filter(task => task.id !== idToRemove));
+  }
+
+
 
   return(
     <>
