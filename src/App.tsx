@@ -51,25 +51,35 @@ const App = () => {
 
   }
 
-  const [selectedsArray, editSelectedsArray] = useState<string[]>([]);
+  const [taskDataArray, editTaskDataArray] = useState([]);
 
   const [selected, setSelected] = useState(false)
 
   const saveSelected = (taskId : string) => {
-    editSelectedsArray(prevTasks => [...prevTasks,taskId])
+    editTaskDataArray(prevTasks => [...prevTasks,{ id: taskId, click : 0}])
   }
   const removeSelected = (taskId : string) => {
-    editSelectedsArray(prevTasks => prevTasks.filter((_, i) => i !== taskId))
+    editTaskDataArray(prevData => prevData.filter(item => item.id !== taskId))
   }
-  const checkSelected = (idsArray: string[])  => {
-    const count = idsArray.length
-    if (count > 0){setSelected(true)} else setSelected(false)
+  const checkSelected = dataArray  => {
+    const count = dataArray.length
+    if (count > 0){
+      setSelected(true)
+    } else setSelected(false)
   }
-  const removeAllSelectedTasks = (idsArray: string[]) => {
-  setTasks(prevTasks => prevTasks.filter(task => !idsArray.includes(task.id)));
+  const editClick = (taskId: string) => {
+    editTaskDataArray(prevArray =>
+                      prevArray.map(data =>
+                                    data.id === taskId
+        ? { ...data, click: data.click === 0 ? 1 : 0 }
+        : data
+    )
+  )
   }
-  const removeOneTask = (idToRemove: string) => {
-  setTasks(prevTasks => prevTasks.filter(task => task.id !== idToRemove));
+  const removeTasks = dataArray => {
+    setTasks(prevTasks => prevTasks.filter(data => !dataArray.some(item => item.id === data.id));
+  editSelectedsArray([])
+  setSelected(false)
   }
 
 
@@ -104,8 +114,8 @@ const App = () => {
        <hr />
 
        <div id="tasks">
-             {tasks.map((task, index) => (
-              <div className="task" key={index}>
+             {tasks.map(task => (
+              <div className="task" key={task.id}>
                  <button className="setting">⚙</button>
                  <div className="taskBody">
                     <h3 className="taskTopic">{task.topic}</h3>
