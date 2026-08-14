@@ -98,9 +98,11 @@ const App = () => {
   })
   }
 
-  const settingBtn = id => {
-    if (selected.quantity === 0) saveSelected(id) 
+  const [clicked, setClicked] = useState(false)
 
+  const settingBtn = id => {
+    if (selected.quantity === 0) saveSelected(id); setClicked(true);
+    if (selected.quantity > 0) removeSelected(id); setClicked(false);
   }
 
   return(
@@ -127,10 +129,12 @@ const App = () => {
       <br />
 
       <div id="buttons">
-          <button id="addTask" onClick={() => addNewTask(task)} >+</button>
+          <button id="addTask"
+                  onClick={() => addNewTask(task)} >+</button>
           {selected.status &&
             <>
-            <button id="delete" onClick={() => removeTasks()}></button>
+            <button id="delete" 
+                    onClick={() => removeTasks()}></button>
             <button id="complite"></button>
             </>
           }
@@ -141,7 +145,8 @@ const App = () => {
        <div id="tasks">
              {tasks.map(task => (
               <div className="task" key={task.id}>
-                 <button className="setting">⚙</button>
+                 <button onClick={() => settingBtn(task.id)}
+                         className={clicked ? 'setting clicked' : 'setting'}>⚙</button>
                  <div className="taskBody">
                     <h3 className="taskTopic">{task.topic}</h3>
                     <hr />
