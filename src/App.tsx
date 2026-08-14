@@ -53,36 +53,55 @@ const App = () => {
 
   const [taskDataArray, editTaskDataArray] = useState([]);
 
-  const [selected, setSelected] = useState(false)
+  const [selected, setSelected] = useState({
+    status : false,
+    quantity : 0,
+  })
 
   const saveSelected = (taskId : string) => {
     editTaskDataArray(prevTasks => [...prevTasks,{ id: taskId, click : 0}])
+    if (selected.status === false){
+      setSelected({
+        status : true,
+        quantity : 1,
+      })
+    } else setSelected(prev => ({
+      ...prev,
+      quantity: prev.quantity += 1
+    }))
   }
   const removeSelected = (taskId : string) => {
     editTaskDataArray(prevData => prevData.filter(item => item.id !== taskId))
-  }
-  const checkSelected = dataArray  => {
-    const count = dataArray.length
-    if (count > 0){
-      setSelected(true)
-    } else setSelected(false)
+    if (selected.quantity === 0){
+      setSelected(prev => ({
+        ...prev,
+        status: false,
+      }))
+    }else setSelected(prev => ({
+      ...prev,
+      quantity : prev.quantity -= 1,
+    }))
   }
   const editClick = (taskId: string) => {
-    editTaskDataArray(prevArray =>
-                      prevArray.map(data =>
-                                    data.id === taskId
+    editTaskDataArray(prevArray => prevArray.map(data => data.id === taskId
         ? { ...data, click: data.click === 0 ? 1 : 0 }
         : data
     )
   )
   }
-  const removeTasks = dataArray => {
-    setTasks(prevTasks => prevTasks.filter(data => !dataArray.some(item => item.id === data.id));
-  editSelectedsArray([])
-  setSelected(false)
+  const removeTasks = () => {
+    setTasks(prevTasks => prevTasks.filter(data => !taskDataArray.some(item => item.id === data.id)));
+  editTaskDataArray([])
+  setSelected({
+    status : false,
+    quantity : 0,
+  })
   }
 
+  const settingBtn = id => {
+    if (selected.quantity === 0) saveSelected(id) 
 
+  }
 
   return(
     <>
@@ -109,6 +128,12 @@ const App = () => {
 
       <div id="buttons">
           <button id="addTask" onClick={() => addNewTask(task)} >+</button>
+          {selected.status &&
+            <>
+            <button id="delete" onClick={() => removeTasks()}></button>
+            <button id="complite"></button>
+            </>
+          }
        </div>
         
        <hr />
